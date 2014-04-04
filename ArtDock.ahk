@@ -4,7 +4,14 @@
 ;
 ;  http://www.39kasen.sakura.ne.jp/rawinputcontroltest/
 
+;Referance materials
+;# mean ctl
+;
+
+;Set default GUI scaleing to 1
 GuiScale=1
+
+
 #SingleInstance force
 #NoEnv
 SetWorkingDir %A_ScriptDir%
@@ -96,9 +103,9 @@ RawInputProfiles =
 RID_UsagePage = 0x0d    ;Digitizers
 RID_Usage = 0x04    ;Touch Screen
 
-; Specify Control definition file. 
+; Specify Control definition file.
 ;   If not specified, .txt file with the same name as the script will be loaded.
-;   or if you drop .txt file into this script (or run this script with argumnt), 
+;   or if you drop .txt file into this script (or run this script with argumnt),
 ;   .txt file will be loaded as a Control definition file.
 
 ControlSource = MenuDock.txt
@@ -109,9 +116,9 @@ HideOnMouseCursor := 1
 ; Window snap spacing
 GuiSnapSpacing := 15
 
-; Hotkey for Exit / Reload script. (specify AHK keystroke(s)) 
-ExitKey = 
-ReloadKey = 
+; Hotkey for Exit / Reload script. (specify AHK keystroke(s))
+ExitKey =
+ReloadKey =
 
 ; Create GUI
 Gosub, CreateGui
@@ -184,7 +191,7 @@ GetDisplayOrientation()
     VarSetCapacity(DEVMODE, DEVMODE_Size, 0)
     NumPut(DEVMODE_Size, DEVMODE, 68, "UShort")
     NumPut(64, DEVMODE, 70, "UShort")
-    
+
     ret := DllCall("EnumDisplaySettings", "Ptr", 0, "UInt", 0xFFFFFFFF, "Str", DEVMODE)
     dmDisplayOrientation := 0
     ;DM_DISPLAYORIENTATION = 0x00000080
@@ -252,9 +259,9 @@ CreateGui:
     GuiFontColor := "c000000"
     GuiActiveFontColor := "c000000"
     TouchMonitorControls := 0
-    
+
     ControlGroup := {}
-    
+
     ; Load Control source file.
     Loop, READ, %ControlSource%
     {
@@ -270,7 +277,7 @@ CreateGui:
                 base_y := match2
             If (RegExMatch(match1, ".+Color"))
                 Gui%match1% := "c" match2
-        }   
+        }
         ; Set offset of Control position.
         Else If (RegExMatch(readline, "^#ControlOffset:.*?(\$?)(-?\d+).*?,.*?(\$?)(-?\d+)", match)) {
             base_x := (match1 ? 0 : base_x) + match2
@@ -348,7 +355,7 @@ CreateGui:
         GuiMarginRight =
     If (GuiHeight)
         GuiMarginBottom =
-    
+
     ; Create GUI
     If (GuiColor)
         Gui, Color, %GuiColor%
@@ -412,7 +419,7 @@ CreateGui:
     GuiControl, Focus, BtnDummy
 ;   If (GuiTransColor)
 ;       WinSet, TransColor, %GuiTransColor%
-    
+
     ; Set Window size / absolute position
     option =
     For key, val in Object("X", "x", "Y", "y", "Width", "w", "Height", "h") {
@@ -422,13 +429,13 @@ CreateGui:
     ; Get size of window Controls arranged.
     Gui, Show, Hide %option%, Raw Input TEST
     WinGetPos, GuiX, GuiY, GuiWidth, GuiHeight
-    
+
     ; Right / bottom margin.
     If (GuiMarginRight)
         GuiWidth += GuiMarginRight
     If (GuiMarginBottom)
         GuiHeight += GuiMarginBottom
-    
+
     ; Window position.
     SysGet, area, MonitorWorkArea
     If (InStr(GuiPos, "Left"))
@@ -439,39 +446,39 @@ CreateGui:
         GuiY := areaTop
     Else If (InStr(GuiPos, "Bottom"))
         GuiY := areaBottom - GuiHeight
-    
+
     ; set right-spacing if #Window:RightSpacing option exist
     If (GuiRightSpacing)
         GuiX := areaRight - GuiWidth - GuiRightSpacing
     ; set bottom-spacing if #Window:BottomSpacing option exist
     If (GuiBottomSpacing)
         GuiY := areaBottom - GuiHeight - GuiBottomSpacing
-        
+
     GuiCurrentPos := RegExReplace(GuiPos, "(Left|Right|Top|Bottom)", "Work$1")
-    
+
     ; Keep window handle as global variable.
     WinGet, GuiHwnd, ID
-    
+
     ; To get window information, set window transparent and show.
     WinSet, Transparent, 0
     Gui, Show, NoActivate x%GuiX% y%GuiY% w%GuiWidth% h%GuiHeight%
-    
+
     ; Keep client width & height as global variable.
     VarSetCapacity(point, 16, 0)
     DllCall("GetClientRect", "Ptr", GuiHwnd, "Str", point)
     PadWidth := Numget(point, 8, "Int")
     PadHeight := Numget(point, 12, "Int")
     point =
-    
+
     ; Minimized startup section.
     If (MinimizedStartupControl) {
         CtlMinimize_Proc(1, 0, 0, MinimizedStartupControl)
     }
-    
+
     ; Set specified window transparency.
     WinSet, Transparent, % (GuiTransparent && GuiTransparent < 255) ? GuiTransparent : 255
     Gui, Show, NoActivate
-    
+
     Return
 
 ; dummy button routine
@@ -499,7 +506,7 @@ InitRawInput:
     NumPut(RID_Usage, RawInputDevices, 2, "UShort")
     NumPut(0x00000100, RawInputDevices, 4, "UInt")  ; RIDEV_INPUTSINK = 0x00000100
     NumPut(GuiHwnd, RawInputDevices, 8, "Ptr")
-    
+
     ;------------------------------------------- Reference: RegisterRawInputDevices function
     ;   BOOL WINAPI RegisterRawInputDevices(
     ;     __in  PCRAWINPUTDEVICE pRawInputDevices,
@@ -513,7 +520,7 @@ InitRawInput:
         MsgBox, Error: RegisterRawInputDevices failed`nCode: %A_LastError%`n`nScript will exit.
         ExitApp
     }
-    
+
     ;------------------------------------------- Reference: RAWINPUTHEADER structure
     ;   typedef struct tagRAWINPUTHEADER {
     ;     DWORD  dwType;
@@ -591,7 +598,7 @@ WM_INPUT_Initialize(wParam, lParam, msg, hwnd)
     Local ret, cbSize, RawInputData, firstbyte, obj, k, v
     Critical
     Thread, NoTimers
-    
+
 ;; // testmode begin //
 ;If lParam is integer
 ;{
@@ -607,7 +614,7 @@ WM_INPUT_Initialize(wParam, lParam, msg, hwnd)
     ; Get RAWINPUT data.
     ret := DllCall("GetRawInputData", "Ptr", lParam, "UInt", 0x10000003
                    , "Str", RawInputData, "UInt*", cbSize, "UInt", RAWINPUTHEADER_Size)
-    
+
 ;; // testmode begin //
 ;}
 ;else {
@@ -619,39 +626,39 @@ WM_INPUT_Initialize(wParam, lParam, msg, hwnd)
 ;   }
 ;}
 ;; // testmode end //
-    
+
     firstbyte := NumGet(RawInputData, RAWINPUTHEADER_Size + 8, "UChar")
     datasize := NumGet(RawInputData, RAWINPUTHEADER_Size, "UInt")
-    
+
     ;TrayTip,, %firstbyte% / %datasize%
-    
+
     obj := RawInputProfile.FirstByte_DataSize[firstbyte "_" datasize]
     If (!IsObject(obj))
         obj := RawInputProfile.FirstByte["#" firstbyte]
     If (!IsObject(obj))
         obj := RawInputProfile.default
-    
+
     ;TrayTip,, % obj.Name "`nfirstbyte: " firstbyte "`ndatasize:" datasize
-    
+
     ; default settings
     RawData_RawDataCount := 1
     RawData_RawDataOffset := 0
     RawData_RawDataSplitSize := 0
-    ; 
+    ;
     For k ,v in obj
         RawData_%k% := v
     ; delete Profile object
     RawInputProfile =
-    
+
     Gosub, InitRawInputProfile
-    
+
     RawInputMethod := "WM_INPUT"
     If (RawData_RawInputMethod)
         RawInputMethod := RawData_RawInputMethod
     OnMessage(0x00FF, RawInputMethod)
     ; process first message actually
     RawInputMethod.(wParam, lParam, msg, hwnd)
-    
+
     Return 0
 }
 
@@ -660,10 +667,10 @@ InitRawInputProfile:
     RawData_OffsetStat += RAWINPUTHEADER_Size + 4 + 4
     If (RawData_OffsetTouchId)
         RawData_OffsetTouchId += RAWINPUTHEADER_Size + 4 + 4
-    
+
     RawData_OffsetX += RAWINPUTHEADER_Size + 4 + 4
     RawData_OffsetY += RAWINPUTHEADER_Size + 4 + 4
-    
+
     mask := RawData_TouchIdMask
     RegExMatch(mask, "0*$", match)
     RawData_TouchIdBitShift := StrLen(match)
@@ -674,7 +681,7 @@ InitRawInputProfile:
     Loop, % StrLen(match)
         RawData_TouchIdMask += 2 ** (A_Index - 1)
     RawData_TouchIdAddition := 1 - RawData_TouchIdMinimum
-    
+
     RawInput_Initialized := True
     Return
 
@@ -695,12 +702,12 @@ WM_INPUT(wParam, lParam, msg, hwnd)
     ;     __in       UINT cbSizeHeader
     ;   );
     ;-------------------------------------------
-    
+
 ;; // testmode begin //
 ;If lParam is integer
 ;{
 ;; // testmode end //
-    
+
     ; Get size of RAWINPUT data.
     ret := DllCall("GetRawInputData", "Ptr", lParam, "UInt", 0x10000003
                    , "Ptr", 0, "UInt*", cbSize, "UInt", RAWINPUTHEADER_Size)
@@ -711,7 +718,7 @@ WM_INPUT(wParam, lParam, msg, hwnd)
     ; Get RAWINPUT data.
     ret := DllCall("GetRawInputData", "Ptr", lParam, "UInt", 0x10000003
                    , "Str", RawInputData, "UInt*", cbSize, "UInt", RAWINPUTHEADER_Size)
-    
+
 ;; // testmode begin //
 ;}
 ;else {
@@ -723,7 +730,7 @@ WM_INPUT(wParam, lParam, msg, hwnd)
 ;   }
 ;}
 ;; // testmode end //
-    
+
     ;------------------------------------------- Reference: RAWINPUT structure
     ;   typedef struct tagRAWINPUT {
     ;     RAWINPUTHEADER header;
@@ -743,14 +750,14 @@ WM_INPUT(wParam, lParam, msg, hwnd)
     ;------------------------------------------- Reference: RAWHID structure
     ;   typedef struct tagRAWHID {
     ;     DWORD dwSizeHid;
-    ;     DWORD dwCount;              
+    ;     DWORD dwCount;
     ;     BYTE  bRawData[1];
     ;   } RAWHID, *PRAWHID, *LPRAWHID;
     ;-------------------------------------------
-    
+
     Loop, %RawData_RawDataCount% {
         current_offset := RawData_RawDataOffset + (A_Index - 1) * RawData_RawDataSplitSize
-    
+
         raw_stat := NumGet(RawInputData, RawData_OffsetStat + current_offset, "UChar")
         If (!raw_stat)
             Break
@@ -758,7 +765,7 @@ WM_INPUT(wParam, lParam, msg, hwnd)
             raw_stat |= NumGet(RawInputData, RawData_OffsetTouchId + current_offset, "UChar") << 8
         raw_x := NumGet(RawInputData, RawData_OffsetX + current_offset, "UShort")
         raw_y := NumGet(RawInputData, RawData_OffsetY + current_offset, "UShort")
-        
+
         ; process WM_INPUT messages in new thread (To reduce dropping messages)
         If (raw_stat & 1) {
             ; case: touch down
@@ -816,15 +823,15 @@ WM_INPUT_HPSlate500(wParam, lParam, msg, hwnd)
     ; Get RAWINPUT data.
     ret := DllCall("GetRawInputData", "Ptr", lParam, "UInt", 0x10000003
                    , "Str", RawInputData, "UInt*", cbSize, "UInt", RAWINPUTHEADER_Size)
-    
+
     Loop, % NumGet(RawInputData, cbSize - 1, "UChar") {
         parse_offset := (A_Index - 1) * 15 + 3
         ;uid := NumGet(RawInputData, parse_offset + RawData_OffsetStat + 1, "UChar")
-        
+
         raw_stat := NumGet(RawInputData, parse_offset + RawData_OffsetStat, "UChar")
         raw_x := NumGet(RawInputData, parse_offset + RawData_OffsetX, "UShort")
         raw_y := NumGet(RawInputData, parse_offset + RawData_OffsetY, "UShort")
-        
+
         ; process WM_INPUT messages in new thread (To reduce dropping messages)
         If (raw_stat & 1) {
             ; case: touch down
@@ -870,7 +877,7 @@ ProcRawInput(wParam, lParam, msg, hwnd)
     ; ver.0.1g~
     n := (wParam >> RawData_TouchIdBitShift & RawData_TouchIdMask) + RawData_TouchIdAddition    ; touch id
     stat := wParam & 1  ; touch state
-    
+
 ;   src_x := (lParam & 0xFFFF)
 ;   src_y := (lParam >> 16)
     ; display orientation: 0
@@ -893,7 +900,7 @@ ProcRawInput(wParam, lParam, msg, hwnd)
         x := Floor((A_ScreenWidth - 1) / RawData_MaxY * (lParam >> 16))
         y := Floor((A_ScreenHeight - 1) / RawData_MaxX * (RawData_MaxX - (lParam & 0xFFFF)))
     }
-    
+
     Screen_X := x
     Screen_Y := y
     ScreenToClient(hwnd, x, y)
@@ -916,7 +923,7 @@ ProcRawInput(wParam, lParam, msg, hwnd)
             && (Ctl%GuiMinimizedControl%_Y < y) && (y < Ctl%GuiMinimizedControl%_Y2)))
         {
             ; do not hide window on cursor when touch down
-            HideOnMouseCursor_Cancel(1000)  
+            HideOnMouseCursor_Cancel(1000)
             Loop, %CtlMax% {
                 If ((Ctl%A_Index%_X < x) && (x < Ctl%A_Index%_X2)
                  && (Ctl%A_Index%_Y < y) && (y < Ctl%A_Index%_Y2))
@@ -949,6 +956,7 @@ ScreenToClient(hwnd, ByRef x, ByRef y)
 ;---------------------------------------------------------- process controls
 
 ; control: Key
+;; Basic keys
 CtlKey_Proc(stat, x, y, cnum)
 {
     Global
@@ -971,12 +979,12 @@ CtlKey_Proc(stat, x, y, cnum)
     Else If (!stat) {
         ControlAction(cnum, "Up", appmod)
         If (Ctl%cnum%_Upkey) {
-            ;Send, % Ctl%cnum%%appmod%_Upkey 
+            ;Send, % Ctl%cnum%%appmod%_Upkey
             PressedKeys("Delete", ctl)
         }
         ChangeControlView(cnum, stat)
     }
-    
+
     Return -stat
 }
 
@@ -1062,7 +1070,7 @@ CtlVSlider_Proc(stat, x, y, cnum)
     }
     ; touch up
     Else If (!stat) {
-        StringReplace, CtlVSlider_Proc_Monitoring, CtlVSlider_Proc_Monitoring, %cnum%|, 
+        StringReplace, CtlVSlider_Proc_Monitoring, CtlVSlider_Proc_Monitoring, %cnum%|,
         SetTimer, CtlVSlider_CheckRelease, Off
         ChangeControlView(cnum, stat)
         VSlider%ctl%_LastPos := 0
@@ -1112,7 +1120,7 @@ CtlVSliderDelay_Proc(stat, x, y, cnum)
     }
     ; touch up
     Else If (!stat) {
-        StringReplace, CtlVSlider_Proc_Monitoring, CtlVSlider_Proc_Monitoring, %cnum%|, 
+        StringReplace, CtlVSlider_Proc_Monitoring, CtlVSlider_Proc_Monitoring, %cnum%|,
         SetTimer, CtlVSlider_CheckRelease, Off
         ChangeControlView(cnum, stat)
         VSlider%ctl%_LastPos := 0
@@ -1144,7 +1152,7 @@ CtlHSlider_Proc(stat, x, y, cnum)
             CtlHSlider_Proc_Monitoring .= cnum "|"
             Sleep, 50
         }
-        
+
         ; touch move
         Else {
             difference := x - HSlider%ctl%_LastPos
@@ -1152,7 +1160,7 @@ CtlHSlider_Proc(stat, x, y, cnum)
                 ;Send, % (difference < 0) ? Ctl%cnum%%appmod%_Upkey : Ctl%cnum%%appmod%_DownKey
                 ControlAction(cnum, (difference < 0) ? "Up" : "Down", appmod)
                 HSlider%ctl%_LastPos := x
-                HSlider%ctl%_Moved := True  
+                HSlider%ctl%_Moved := True
                 Sleep, 200
             }
             ; Quit process if there is no receipt of a message for 100ms
@@ -1162,7 +1170,7 @@ CtlHSlider_Proc(stat, x, y, cnum)
     }
     ; touch up
     Else If (!stat) {
-        StringReplace, CtlHSlider_Proc_Monitoring, CtlHSlider_Proc_Monitoring, %cnum%|, 
+        StringReplace, CtlHSlider_Proc_Monitoring, CtlHSlider_Proc_Monitoring, %cnum%|,
         SetTimer, CtlHSlider_CheckRelease, Off
         ChangeControlView(cnum, stat)
         HSlider%ctl%_LastPos := 0
@@ -1177,12 +1185,13 @@ CtlHSlider_Proc(stat, x, y, cnum)
 }
 
 ; control: MenuDock
+;; Uses scrpits from program root dir
 CtlMenuDock_Proc(stat, x, y, cnum)
-{   
+{
     Local ctl
     ctl := Ctl%cnum%_Name
     ControlSource = MenuDock.txt
-    
+
     ; touch down
     If (stat && !PressedKeys("Check", ctl)) {
         ChangeControlView(cnum, stat)
@@ -1200,12 +1209,13 @@ CtlMenuDock_Proc(stat, x, y, cnum)
 }
 
 ; control: Dock
+;; Uses scrpits from program root\txt
 CtlDock_Proc(stat, x, y, cnum)
-{   
+{
     Local ctl
     ctl := Ctl%cnum%_Name
     ControlSource = %ctl%.txt
-    
+
     ; touch down
     If (stat && !PressedKeys("Check", ctl)) {
         ChangeControlView(cnum, stat)
@@ -1225,11 +1235,11 @@ CtlDockSlider_Proc(stat, x, y, cnum)
     Static appmod
     Local ctl, difference
     ctl := Ctl%cnum%_Name
-    
+
     ControlSource = %ctl%.txt
     ControlSourceP = alt\%ctl%P_P.txt
     ControlSourceH = %ctl%P_H.txt
-    
+
     If (stat) {
         ; touch down
         If (!HSlider%ctl%_LastPos) {
@@ -1256,7 +1266,7 @@ CtlDockSlider_Proc(stat, x, y, cnum)
     }
     ; touch up
     Else If (!stat) {
-        StringReplace, CtlHSlider_Proc_Monitoring, CtlHSlider_Proc_Monitoring, %cnum%|, 
+        StringReplace, CtlHSlider_Proc_Monitoring, CtlHSlider_Proc_Monitoring, %cnum%|,
         SetTimer, CtlHSlider_CheckRelease, Off
         ChangeControlView(cnum, stat)
         HSlider%ctl%_LastPos := 0
@@ -1291,7 +1301,7 @@ CtlAppDock_Proc(stat, x, y, cnum)
     Else If (!stat) {
         ControlAction(cnum, "Up", appmod)
         If (Ctl%cnum%_Upkey) {
-            ;Send, % Ctl%cnum%%appmod%_Upkey 
+            ;Send, % Ctl%cnum%%appmod%_Upkey
             PressedKeys("Delete", ctl)
         }
         ChangeControlView(cnum, stat)
@@ -1300,11 +1310,13 @@ CtlAppDock_Proc(stat, x, y, cnum)
         Sleep, 50
         Run, %A_AhkPath% "alt\AppDock.ahk"  "%ControlSourceH%"
     }
-    
+
     Return -stat
 }
 
 ; control: TouchOn
+;; code to disable touchscreen
+;; buggy frome what I understand
 CtlTouchOn_Proc(stat, x, y, cnum)
 {
     Global
@@ -1324,18 +1336,20 @@ CtlTouchOn_Proc(stat, x, y, cnum)
     Else If (!stat) {
         ControlAction(cnum, "Up", appmod)
         If (Ctl%cnum%_Upkey) {
-            ;Send, % Ctl%cnum%%appmod%_Upkey 
+            ;Send, % Ctl%cnum%%appmod%_Upkey
             PressedKeys("Delete", ctl)
         }
         ChangeControlView(cnum, stat)
         RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Wisp\Touch, TouchGate, 1
         SendMessage, 0x1A,,,, ahk_id 0xFFFF
     }
-    
+
     Return -stat
 }
 
 ; control: TouchOff
+;; code to disable touchscreen
+;; buggy frome what I understand
 CtlTouchOff_Proc(stat, x, y, cnum)
 {
     Global
@@ -1355,14 +1369,14 @@ CtlTouchOff_Proc(stat, x, y, cnum)
     Else If (!stat) {
         ControlAction(cnum, "Up", appmod)
         If (Ctl%cnum%_Upkey) {
-            ;Send, % Ctl%cnum%%appmod%_Upkey 
+            ;Send, % Ctl%cnum%%appmod%_Upkey
             PressedKeys("Delete", ctl)
         }
         ChangeControlView(cnum, stat)
         RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Wisp\Touch, TouchGate, 0
         SendMessage, 0x1A,,,, ahk_id 0xFFFF
     }
-    
+
     Return -stat
 }
 ;----------------------------------- END OF NEW BUTTON TYPES ----------------------------------
@@ -1410,6 +1424,7 @@ CtlHSlider_CheckRelease:
 
 
 ; control: Handle
+;; Code to create a button that will move the gui
 CtlHandle_Proc(stat, x, y, cnum)
 {
     Global GuiHwnd, Screen_X, Screen_Y
@@ -1448,14 +1463,15 @@ ChangeControlLabel(ctl, caption)
     cnum := InStr(ctl, "Ctl") ? %ctl%_ID : ctl
     If (caption == -1)
         caption := Ctl%cnum%_Caption
-    
+
 ;   GuiControlGet, org, Pos, %ctlname%Label
-    GuiControl,, %ctlname%Label, %caption%  
+    GuiControl,, %ctlname%Label, %caption%
 
     Return
 }
 
 ; control: Close button
+;; Code to create a close button
 CtlClose_Proc(stat, x, y, cnum)
 {
     Global ControlSource
@@ -1483,7 +1499,7 @@ CtlClose_Proc(stat, x, y, cnum)
         ; Quit script if touch up in close control.
         If ((Ctl%cnum%_X < x) && (x < Ctl%cnum%_X2) && (Ctl%cnum%_Y < y) && (y < Ctl%cnum%_Y2)) {
             If (reload_me) {
-                
+
                 Run, %A_AhkPath% "%A_ScriptFullPath%" "%ControlSource%"
             }
             Else
@@ -1506,7 +1522,7 @@ CtlMinimize_Proc(stat, x, y, cnum)
         ChangeControlView(cnum, stat)
         x := (Ctl%cnum%_X < 0) ? 0 : Ctl%cnum%_X
         y := (Ctl%cnum%_Y < 0) ? 0 : Ctl%cnum%_Y
-        w := Ctl%cnum%_W + ((Ctl%cnum%_X < 0) ? Ctl%cnum%_X : 0) 
+        w := Ctl%cnum%_W + ((Ctl%cnum%_X < 0) ? Ctl%cnum%_X : 0)
         h := Ctl%cnum%_H + ((Ctl%cnum%_Y < 0) ? Ctl%cnum%_Y : 0)
         If (x + w > PadWidth)
             w := PadWidth - x
@@ -1704,13 +1720,13 @@ RIC_EnableTouch:
     If (!RIC_GetTouchState())
         RIC_SetTouchState(1)
     Return
-    
+
 ; disable touch
 RIC_DisableTouch:
     If (RIC_GetTouchState())
         RIC_SetTouchState(0)
     Return
-    
+
 ; toggle touch state
 RIC_ToggleTouch:
     RIC_SetTouchState(!RIC_GetTouchState())
@@ -1754,14 +1770,14 @@ WM_MOUSEMOVE_CheckCursor:
     WinGetPos, wx, wy, ww, wh, ahk_id %GuiHwnd%
 
     If ((x < wx) || (wx + ww < x) || (y < wy) || (wy + wh < y)) {
-        
+
         Gui, Show, NoActivate
         SetTimer, WM_MOUSEMOVE_CheckCursor, Off
 
     }
     DetectHiddenWindows, %detect%
     Return
-    
+
 ; Disable "Hide Window on cursor" for a specified period.
 ;   If the cursor is on a window after a specified period,
 ;   keep disabled until the cursor away from the window.
