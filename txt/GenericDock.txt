@@ -8,7 +8,7 @@
 #Window:ActiveFontColor=00C0FF
 
 ; Specify Start-up window position by Left/Right/Top/Bottom. (alone or in combination)
-#Window:Pos=LeftTop
+#Window:Pos=RightTop
 ; You can also specify window position by the coordinate.
 ;#Window:X=0
 ;#Window:Y=0
@@ -29,19 +29,25 @@
 
 #ControlOffset:0, 0 ;----------------- Row 1 -------------------
 
+#Control:Dock
+	Name=MinDock
+	Pos=0, 0, 50, 50
+	Image1=img\AD_MinDock.bmp
+	Image2=img\AD_DownButton.bmp
+
 ; Handle for moving the window. - Control-type: Handle
 #Control:Handle
 	Name=Handle
-	Pos=0, 0, 50, 50
+	Pos=50, 0, 50, 50
 	Image1=img\AD_HGeneric.bmp
 	Image2=img\AD_DownButton.bmp
 
 ; Back
-#Control:MenuDock
-	Name=MenuDock
-	Pos=50, 0, 50, 50
-	Image1=img\AD_Back.bmp
-	Image2=img\AD_DownButton.bmp
+;#Control:MenuDock
+;	Name=MenuDock
+;	Pos=100, 0, 50, 50
+;	Image1=img\AD_Back.bmp
+;	Image2=img\AD_DownButton.bmp
 
 #ControlOffset:0, 50 ;----------------- ROW 2 -------------------
 
@@ -51,9 +57,9 @@
 	Pos=0, 0, 100, 50
 	Step=10
 	;Left
-	Upkey={Ctrl Down}{s Down}{s Up}{Ctrl Up}
+	Upkey={Alt Down}{Left Down}{Left Up}{Alt Up}
 	;Right
-	Downkey={Ctrl Down}{o Down}{o Up}{Ctrl Up}
+	Downkey={Alt Down}{Right Down}{Right Up}{Alt Up}
 	TouchKey={Tab Down}{Tab Up}
 	Image1=img\AD_Tab.bmp
 	Image2=img\AD_DownButton.bmp
