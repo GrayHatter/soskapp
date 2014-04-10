@@ -72,9 +72,9 @@
 	Pos=0, 0, 100, 50
 	Step=10
 	;Left
-	Upkey={Ctrl Down}{y Down}{y Up}{Ctrl Up}
+	Upkey={Ctrl Down}{z Down}{z Up}{Ctrl Up}
 	;Right
-	Downkey={Ctrl Down}{z Down}{z Up}{Ctrl Up}
+	Downkey={Ctrl Down}{y Down}{y Up}{Ctrl Up}
 	TouchKey={Ctrl Down}{z Down}{z Up}{Ctrl Up}
 	Image1=img\AD_Undo.bmp
 	Image2=img\AD_DownButton.bmp
@@ -92,7 +92,7 @@
 #ControlOffset:0, 40 ;----------------- ROW 7 -------------------
 
 ; Shift
-#Control:Key
+#Control:ToggleKey
 	Name=Shift
 	Pos=0, 0, 100, 40
 	DownKey={Shift Down}
@@ -103,7 +103,7 @@
 #ControlOffset:0, 40 ;----------------- ROW 8 -------------------
 
 ; Ctrl
-#Control:Key
+#Control:ToggleKey
 	Name=Ctrl
 	Pos=0, 0, 50, 40
 	DownKey={Ctrl Down}
@@ -112,7 +112,7 @@
 	Image2=img\AD_DownButton.bmp
 
 ; Alt
-#Control:Key
+#Control:ToggleKey
 	Name=Alt
 	Pos=50, 0, 50, 40
 	DownKey={Alt Down}
@@ -179,16 +179,18 @@
 #Control:Key
 	Name=PgUp1
 	Pos=50, 0, 50, 50
-	DownKey={PgUp Down}
-	UpKey={PgUp Up}
-	Image1=img\AD_SelectAll.bmp
+	DownKey={Ctrl Down}{PgUp Down}
+	UpKey={Ctrl Up}{PgUp Up}
+	Image1=img\AD_HGeneric.bmp
 	Image2=img\AD_DownButton.bmp
 
 ; Select All
 #Control:Key
 	Name=PgDn1
 	Pos=50, 50, 50, 50
-	DownKey={PgDn Down}
-	UpKey={PgDn Up}
+	DownKey={Ctrl Down}{PgDn Down}
+	UpKey={Ctrl Up}{PgDn Up}
 	Image1=img\AD_SelectAll.bmp
 	Image2=img\AD_DownButton.bmp
+
+

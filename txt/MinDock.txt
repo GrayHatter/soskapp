@@ -39,8 +39,8 @@
 #ControlOffset:50, 0 
 
 ; Back
-#Control:MenuDock
-	Name=MenuDock
+#Control:Dock
+	Name=GenericDock
 	Pos=0, 0, 50, 25
 	Image1=img\AD_MaxMode.bmp
 	Image2=img\AD_DownButton.bmp
