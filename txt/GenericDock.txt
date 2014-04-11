@@ -8,7 +8,7 @@
 #Window:ActiveFontColor=00C0FF
 
 ; Specify Start-up window position by Left/Right/Top/Bottom. (alone or in combination)
-#Window:Pos=RightTop
+#Window:Pos=MiddleRight
 ; You can also specify window position by the coordinate.
 ;#Window:X=0
 ;#Window:Y=0
@@ -27,170 +27,98 @@
 
 ;############################## Controls settings #############################
 
-#ControlOffset:0, 0 ;----------------- Row 1 -------------------
-
+#ControlOffset:0, 0 ;----------------- Row 0 -------------------
+;minimize
 #Control:Dock
 	Name=MinDock
 	Pos=0, 0, 50, 50
-	Image1=img\AD_MinDock.bmp
-	Image2=img\AD_DownButton.bmp
-
-; Handle for moving the window. - Control-type: Handle
-#Control:Handle
-	Name=Handle
-	Pos=50, 0, 50, 50
 	Image1=img\AD_HGeneric.bmp
 	Image2=img\AD_DownButton.bmp
 
-; Back
-;#Control:MenuDock
-;	Name=MenuDock
-;	Pos=100, 0, 50, 50
-;	Image1=img\AD_Back.bmp
-;	Image2=img\AD_DownButton.bmp
-
-#ControlOffset:0, 50 ;----------------- ROW 2 -------------------
-
-; HSlider - Tab
-#Control:HSlider
-	Name=Tab
-	Pos=0, 0, 100, 50
-	Step=10
-	;Left
-	Upkey={Alt Down}{Left Down}{Left Up}{Alt Up}
-	;Right
-	Downkey={Alt Down}{Right Down}{Right Up}{Alt Up}
-	TouchKey={Tab Down}{Tab Up}
-	Image1=img\AD_Tab.bmp
-	Image2=img\AD_DownButton.bmp
-
-#ControlOffset:0, 50 ;----------------- ROW 3 -------------------
-
-; HSlider - Undo
-#Control:HSlider
-	Name=Undo
-	Pos=0, 0, 100, 50
-	Step=10
-	;Left
-	Upkey={Ctrl Down}{z Down}{z Up}{Ctrl Up}
-	;Right
-	Downkey={Ctrl Down}{y Down}{y Up}{Ctrl Up}
-	TouchKey={Ctrl Down}{z Down}{z Up}{Ctrl Up}
-	Image1=img\AD_Undo.bmp
-	Image2=img\AD_DownButton.bmp
-
-#ControlOffset:0, 50 ;----------------- ROW 4 -------------------
-
+#ControlOffset:0, 50 ;----------------- ROW 1 -------------------
 ; Explorer
 #Control:Key
 	Name=Explorer
-	Pos=0, 0, 100, 40
+	Pos=0, 0, 50, 50
 	DownKey=#e
-	Image1=img\AD_Explorer.bmp
+	Image1=img\Explorer.bmp
 	Image2=img\AD_DownButton.bmp
 
-#ControlOffset:0, 40 ;----------------- ROW 7 -------------------
+#ControlOffset:0, 50 ;----------------- ROW 2 -------------------
+; Del
+#Control:Key
+	Name=Del
+	Pos=0, 0, 50, 50
+	DownKey={Delete}
+	Image1=img\Del.bmp
+	Image2=img\Del_invt.bmp
 
-; Shift
-#Control:ToggleKey
-	Name=Shift
-	Pos=0, 0, 100, 40
-	DownKey={Shift Down}
-	UpKey={Shift Up}
-	Image1=img\AD_TShift.bmp
-	Image2=img\AD_DownButton.bmp
-
-#ControlOffset:0, 40 ;----------------- ROW 8 -------------------
-
+#ControlOffset:0, 50 ;----------------- ROW 2 -------------------
 ; Ctrl
 #Control:ToggleKey
 	Name=Ctrl
-	Pos=0, 0, 50, 40
+	Pos=0, 0, 50, 50
 	DownKey={Ctrl Down}
 	UpKey={Ctrl Up}
-	Image1=img\AD_TCtrl.bmp
-	Image2=img\AD_DownButton.bmp
+	Image1=img\Ctrl.bmp
+	Image2=img\Ctrl_invt.bmp
 
+#ControlOffset:0, 50 ;----------------- ROW 3 -------------------
 ; Alt
 #Control:ToggleKey
 	Name=Alt
-	Pos=50, 0, 50, 40
+	Pos=0, 0, 50, 50
 	DownKey={Alt Down}
 	UpKey={Alt Up}
-	Image1=img\AD_TAlt.bmp
-	Image2=img\AD_DownButton.bmp
+	Image1=img\Alt.bmp
+	Image2=img\Alt_invt.bmp
 
-#ControlOffset:0, 40 ;----------------- ROW 10 -------------------
-
-; Space key - Control type: Key
-#Control:Key
-	Name=Space
-	Pos=0, 0, 100, 40
-	DownKey={Space Down}
-	UpKey={Space Up}
-	Image1=img\AD_TSpacebar.bmp
-	Image2=img\AD_DownButton.bmp
-
-#ControlOffset:0, 40 ;----------------- ROW 11 -------------------
-
-; VSlider - CopyPasteCut
-#Control:VSliderDelay
-	Name=CopyPasteCut
-	Pos=0, 0, 50, 80
-	Step=10
-	Upkey=^c
-	Downkey=^x
-	TouchKey=^v
-	Image1=img\AD_Paste.bmp
-	Image2=img\AD_DownButton.bmp
-
-; VSlider - Esc Enter Del 
-#Control:VSliderDelay
-	Name=EscEnterDel
-	Pos=50, 0, 50, 80
-	Step=10
-	UpKey={Esc}
-	DownKey={Delete}
-	TouchKey={Enter}
-	Image1=img\AD_Enter.bmp
-	Image2=img\AD_DownButton.bmp
-
-#ControlOffset:0, 80 ;----------------- ROW 12 -------------------
-
-; Select All
-#Control:Key
-	Name=CustomTool1
+#ControlOffset:0, 50 ;----------------- ROW 4 -------------------
+; Shift
+#Control:ToggleKey
+	Name=Shift
 	Pos=0, 0, 50, 50
-	DownKey={Ctrl Down}{a Down}
-	UpKey={a Up}{Ctrl Up}
-	Image1=img\AD_SelectAll.bmp
-	Image2=img\AD_DownButton.bmp
+	DownKey={Shift Down}
+	UpKey={Shift Up}
+	Image1=img\Shift.bmp
+	Image2=img\Shift_invt.bmp
 
-; Backspace
+#ControlOffset:0, 50 ;----------------- ROW 5 -------------------
+; Alt Tab
 #Control:Key
-	Name=Backspace
-	Pos=0, 50, 50, 50
-	DownKey={Backspace Down}
-	UpKey={Backspace Up}
-	Image1=img\AD_Backspace.bmp
+	Name=Switch
+	Pos=0, 0, 50, 50
+	DownKey={LAlt Down}{Esc}{LAlt Up}
+	Image1=img\Switch.bmp
+	Image2=img\Switch_invt.bmp
+
+#ControlOffset:0, 50 ;----------------- ROW 6 -------------------
+; Minimize window
+#Control:Key
+	Name=Min
+	Pos=0, 0, 50, 50
+	DownKey={LAlt Down}{Space}{LAlt Up}{n}
+	Image1=img\Minimize.bmp
 	Image2=img\AD_DownButton.bmp
 
-; Select All
+#ControlOffset:0, 50 ;----------------- ROW 7 -------------------
+; Ctrl + PgUp
 #Control:Key
 	Name=PgUp1
-	Pos=50, 0, 50, 50
+	Pos=0, 0, 50, 50
 	DownKey={Ctrl Down}{PgUp Down}
 	UpKey={Ctrl Up}{PgUp Up}
-	Image1=img\AD_HGeneric.bmp
+	Image1=img\PgUp.bmp
 	Image2=img\AD_DownButton.bmp
 
-; Select All
+#ControlOffset:0, 50 ;----------------- ROW 8 -------------------
+; Ctrl + PgDn
 #Control:Key
 	Name=PgDn1
-	Pos=50, 50, 50, 50
+	Pos=0, 0, 50, 50
 	DownKey={Ctrl Down}{PgDn Down}
 	UpKey={Ctrl Up}{PgDn Up}
-	Image1=img\AD_SelectAll.bmp
+	Image1=img\PgDn.bmp
 	Image2=img\AD_DownButton.bmp
 
 
