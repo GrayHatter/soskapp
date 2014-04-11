@@ -108,7 +108,7 @@ RID_Usage = 0x04    ;Touch Screen
 ;   or if you drop .txt file into this script (or run this script with argumnt),
 ;   .txt file will be loaded as a Control definition file.
 
-ControlSource = MenuDock.txt
+ControlSource = default.conf
 
 ; Hide window if mouse cursor comes over the window. (1:Enable / 0:Disable)
 HideOnMouseCursor := 1
@@ -1190,7 +1190,7 @@ CtlMenuDock_Proc(stat, x, y, cnum)
 {
     Local ctl
     ctl := Ctl%cnum%_Name
-    ControlSource = MenuDock.txt
+    ControlSource = default.conf
 
     ; touch down
     If (stat && !PressedKeys("Check", ctl)) {
@@ -1208,13 +1208,13 @@ CtlMenuDock_Proc(stat, x, y, cnum)
     Return -stat
 }
 
-; control: Dock
-;; Uses scrpits from program root\txt
+; control: Extra
+;; Uses scrpits from program root\extra
 CtlDock_Proc(stat, x, y, cnum)
 {
     Local ctl
     ctl := Ctl%cnum%_Name
-    ControlSource = %ctl%.txt
+    ControlSource = %ctl%.conf
 
     ; touch down
     If (stat && !PressedKeys("Check", ctl)) {
@@ -1222,13 +1222,14 @@ CtlDock_Proc(stat, x, y, cnum)
     }
     ; touch up
     Else If (!stat) {
-        Run, %A_AhkPath% "%A_ScriptFullPath%" "txt\%ControlSource%"
+        Run, %A_AhkPath% "%A_ScriptFullPath%" "extra\%ControlSource%"
         ExitApp
     }
     Return -stat
 }
 
 ; control: Dock Slider
+; I think this allows you to change the dock type with a silder, but I don't know for sure...
 CtlDockSlider_Proc(stat, x, y, cnum)
 {
     Global
@@ -1236,6 +1237,7 @@ CtlDockSlider_Proc(stat, x, y, cnum)
     Local ctl, difference
     ctl := Ctl%cnum%_Name
 
+    ; these should be changed to .conf at some point TODO!
     ControlSource = %ctl%.txt
     ControlSourceP = alt\%ctl%P_P.txt
     ControlSourceH = %ctl%P_H.txt
@@ -1281,12 +1283,14 @@ CtlDockSlider_Proc(stat, x, y, cnum)
 }
 
 ; control: App Dock
+; should be called alt not app and/or add, these are extra onscreen menus, they don't close the parent
 CtlAppDock_Proc(stat, x, y, cnum)
 {
     Global
     Static appmod
     Local ctl
     ctl := Ctl%cnum%_Name
+    ; probably need change from txt to conf
     ControlSourceH =%ctl%.txt
     ; touch down
     If (stat && !PressedKeys("Check", ctl)) {
