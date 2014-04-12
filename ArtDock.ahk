@@ -1209,7 +1209,7 @@ CtlMenuDock_Proc(stat, x, y, cnum)
 }
 
 ; control: Extra
-;; Uses scrpits from program root\extra
+;; Uses scrpits from program root
 CtlDock_Proc(stat, x, y, cnum)
 {
     Local ctl
@@ -1222,7 +1222,7 @@ CtlDock_Proc(stat, x, y, cnum)
     }
     ; touch up
     Else If (!stat) {
-        Run, %A_AhkPath% "%A_ScriptFullPath%" "extra\%ControlSource%"
+        Run, %A_AhkPath% "%A_ScriptFullPath%" "%ControlSource%"
         ExitApp
     }
     Return -stat
